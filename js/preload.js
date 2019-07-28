@@ -13,8 +13,13 @@ Preload.prototype = {
         this.game.load.image('score', 'assets/score.png');
         this.game.load.image('logo', 'assets/logo.png');
         this.game.load.image('play', 'assets/play.png');
+        this.game.load.image('ok', 'assets/ok.png');
+        this.game.load.image('tutorial', 'assets/tutorial.png');
         this.game.load.image('gameover', 'assets/gameover.png');
         this.game.load.image('again', 'assets/again.png');
+        this.game.load.image('mute', 'assets/mute.png');
+        this.game.load.audio('them', 'assets/audio/background.mp3');
+        this.game.load.audio('playm', 'assets/audio/play.mp3');
 
     },
     

@@ -2,11 +2,18 @@ var Main = function(game){
 
 };
 var button;
-var res ;
 var logo;
 var sprite;
 var timer;
+var music;
 var total = 60;
+var playm;
+var audio ;
+var tutorial;
+var instruction;
+var ok;
+
+
 
 Main.prototype = {
 
@@ -14,17 +21,23 @@ Main.prototype = {
 
 		var me = this;
 
-
-
+	playm = me.game.add.audio('playm');
+	music = me.game.add.audio('them', 0.5, true);
 		me.game.stage.backgroundColor = "34495f";
-		me.game.add.tileSprite(0,0,600,800,'background');
+		me.game.add.tileSprite(0,0,600,1000,'background');
 	    logo = me.add.sprite(0,40,'logo');
+	tutorial =	me.game.add.button(50 , 500, 'tutorial', me.tutorial, this, 2, 1, 0);
+		tutorial.scale.setTo(0.5,0.5);
 		button = me.game.add.button(200 , 300, 'play', me.actionOnClick, this, 2, 1, 0);
-		sprite = me.add.sprite(0,600,'score');
+audio = me.game.add.button(0 , 700, 'mute', me.volume, this, 2, 1, 0);
+		sprite = me.add.sprite(100,600,'score');
 		sprite.visible =! sprite.visible;
 		timer = game.time.create(false);
 
 		timer.loop(1000, me.updateCounter, this);
+		music.play();
+
+
 		
 	},
 	startGame: function(){
@@ -122,7 +135,7 @@ Main.prototype = {
 		var me = this;
 		this.game.state.start('GameOver');
 		timer.stop();
-		me.game.add.tileSprite(0,0,600,800,'background');
+		me.game.add.tileSprite(0,0,600,1000,'background');
 		me.add.sprite(-350,0,'gameover');
 
 	},
@@ -462,7 +475,7 @@ Main.prototype = {
 	
 		var me = this;
 		var scoreFont = "80px Arial";
-		me.scoreLabel = me.game.add.text(200, 650, "0", {font: scoreFont, fill: "#fff"});
+		me.scoreLabel = me.game.add.text(400, 650, "0", {font: scoreFont, fill: "#fff"});
 
 		me.scoreLabel.anchor.setTo(0.5, 0);
 		me.scoreLabel.align = 'center';
@@ -475,7 +488,7 @@ Main.prototype = {
 
 		var me = this;
 		var timeFont = "80px Arial";
-		me.timeLabel = me.game.add.text(500, 700, "60", {font: timeFont, fill: "#fff"});
+		me.timeLabel = me.game.add.text(250, 780, "time:60", {font: timeFont, fill: "#fff"});
 
 		me.timeLabel.align = 'center';
 
@@ -495,14 +508,16 @@ Main.prototype = {
 
 	},
 	actionOnClick: function(){
-
+   playm.play();
 		var me = this;
 		logo.visible =! logo.visible;
 		button.visible =! button.visible;
+		tutorial.visible =! tutorial.visible;
 		sprite.visible =! sprite.visible;
 		me.startGame();
 		timer.start();
 		me.creatTime();
+
 
 
 
@@ -518,7 +533,37 @@ Main.prototype = {
 
 		}
 
-		me.timeLabel.text = total;
+		me.timeLabel.text = 'time:' + total;
+
+	},
+	volume: function(){
+		var me = this;
+		game.sound.mute = !game.sound.mute ;
+
+
+	},
+	tutorial: function(){
+		playm.play();
+		var me = this;
+		logo.visible =! logo.visible;
+	    button.visible =! button.visible;
+		tutorial.visible =! tutorial.visible;
+		instruction =   me.game.add.text(0, 0, '1)swap donuts so there are 3 same donuts \n   vertically or horizontally ' +
+			'\n 2) every destruction of donuts is +5 sec ' +
+			'\n 3) if the time is over you lost', {fill : 'black',font : '30px italic'});
+	ok = 	me.game.add.button(200 , 300, 'ok', ()=>{
+		playm.play();
+			instruction.visible =! instruction.visible;
+			logo.visible =! logo.visible;
+			button.visible =! button.visible;
+			tutorial.visible =! tutorial.visible;
+			ok.visible = !ok.visible;
+
+
+		}, this, 2, 1, 0);
+
+
+
 
 	},
 
